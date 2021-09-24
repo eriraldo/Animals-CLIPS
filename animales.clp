@@ -71,6 +71,40 @@
 (printout t "b. Consume otras aves" crlf)
 (printout t "(responder a/b): ")
 (assert (alimentacion_ave (read))))
+
+(defrule Rt8 "Alimentación mamifero 1"
+(mamifero ?x)
+=>
+(printout t "a. El animal come carne" crlf)
+(printout t "b. El animal come hojas" crlf)
+(printout t "c. El animal no está comiendo" crlf)
+(printout t "(responder a/b/c): ")
+(assert (alimentacion_mamifero (read))))
+
+(defrule Rt9 "Alimentación mamifero 2"
+(carnivoro ?x)
+=>
+(printout t "Parece ser que el animal tiene color leonado" crlf)
+(printout t "a. El animal tiene franjas negras" crlf)
+(printout t "b. El animal tiene manchas oscuras" crlf)
+(printout t "(responder a/b): ")
+(assert (apariencia_mamifero_carnivoro (read))))
+
+(defrule Rt10 "Apariencia mamífero no come"
+(no_come)
+=>
+(printout t "a. El animal tiene garras y dientes agudos" crlf)
+(printout t "b. El animal tiene pezuñas" crlf)
+(printout t "(responder a/b): ")
+(assert (apariencia_mamifero_no_come (read))))
+
+(defrule Rt11 "Apariencia ungulado"
+(ungulado ?x)
+=>
+(printout t "a. El animal tiene franjas negras y color blanco" crlf)
+(printout t "b. El animal tiene patas largas, cuello largo y color leonado" crlf)
+(printout t "(responder a/b): ")
+(assert (apariencia_mamifero_ungulado (read))))
 ;-------------------------------------------------------------
 ;       Reglas para el S.E. de identificación de animales   |
 ;-------------------------------------------------------------
@@ -111,6 +145,8 @@
 	=>
 	(assert (ave ?x)))
 
+
+
 ;Crías
 (defrule R7 "Tipo cría 1" 
 	(crias a) 
@@ -132,7 +168,7 @@
 	=>
 	(assert (mamifero cria)))
 
-;Apariencia por cria
+;Cantidad patas cria
 (defrule R11 "Cuatro patas cría"
 	(apariencia_cria a)
 	=>
@@ -190,7 +226,78 @@
 	=>
 	(assert (come_aves)))
 
+;Alimentación mamiferos
+(defrule R21 "Come carne"
+	(alimentacion_mamifero a)
+	=>
+	(assert (carnivoro alimentacion)))
 
+(defrule R22 "Come plantas"
+	(alimentacion_mamifero b)
+	=>
+	(assert (herbivoro)))
+
+(defrule R23 "El animal no está comiendo"
+	(alimentacion_mamifero c)
+	=>
+	(assert (no_come)))
+
+(defrule R24 "Herbívoro"
+	(herbivoro)
+	=>
+	(assert (ungulado alimentacion)))
+
+;Apariencia mamífero
+(defrule R25 "Apariencia Mamifero 1"
+	(mamifero ?x)
+	(dientes_agudos ?x)
+	(garras ?x)        
+	=>
+	(assert (carnivoro apariencia)))
+
+(defrule R26 "Apariencia Mamifero 2"
+	(pezuñas ?x)
+	(mamifero ?x)        
+	=>
+	(assert (ungulado apariencia)))
+
+(defrule R27 "Dientes agudos y garras"
+	(apariencia_mamifero_no_come a)
+	=>
+	(assert (dientes_agudos apariencia))
+	(assert (garras apariencia)))
+
+(defrule R28 "Pezuñas"
+	(apariencia_mamifero_no_come b)
+	=>
+	(assert (pezuñas apariencia)))
+
+;Apariencia carnívoro
+(defrule R29 "Franjas negras"
+	(apariencia_mamifero_carnivoro a)
+	=>
+	(assert (color_leonado))
+	(assert (franjas_negras)))
+
+(defrule R30 "Manchas oscuras"
+	(apariencia_mamifero_carnivoro b)
+	=>
+	(assert (color_leonado))
+	(assert (manchas_oscuras)))
+
+;Apariencia ungulado
+(defrule R31 "Franjas negras y color blanco"
+	(apariencia_mamifero_ungulado a)
+	=>
+	(assert (color_blanco))
+	(assert (franjas_negras)))
+
+(defrule R32 "Color leonado, patas largas, cuello largo"
+	(apariencia_mamifero_ungulado b)
+	=>
+	(assert (color_leonado))
+	(assert (patas_largas))
+	(assert (cuello_largo)))
 
 ;Animales
 (defrule A1 "Salamandra"
@@ -239,3 +346,36 @@
 	=>
 	(assert (animal halcon_peregrino))
 	(printout t "El animal es un halcón peregrino" crlf))
+
+(defrule A7 "Tigre"
+	(carnivoro ?x)
+	(color_leonado)
+	(franjas_negras)
+	=>
+	(assert (animal tigre))
+	(printout t "El animal es un tigre" crlf))
+
+(defrule A8 "Leopardo"
+	(carnivoro ?x)
+	(color_leonado)
+	(manchas_oscuras)
+	=>
+	(assert (animal leopardo))
+	(printout t "El animal es un leopardo" crlf))
+
+(defrule A9 "Jirafa"
+	(ungulado ?x)
+	(patas_largas)
+	(cuello_largo)
+	(color_leonado)
+	=>
+	(assert (animal jirafa))
+	(printout t "El animal es un jirafa" crlf))
+
+(defrule A10 "Cebra"
+	(ungulado ?x)
+	(color_blanco)
+	(franjas_negras)
+	=>
+	(assert (animal cebra))
+	(printout t "El animal es un cebra" crlf))
