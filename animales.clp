@@ -99,14 +99,14 @@
 (assert (calidad_vuelo (read))))
 
 ;Aves 4
-(defrule Rt7 "Test 7: Aves (Alimentación)"
+(defrule Rt7 "Test 7: Aves (Tamaño alas)"
 (vuela_bien)
 =>
-(printout t crlf "¿Cómo es la alimentación del ave?" crlf)
-(printout t "	a. Consume crustáceos" crlf)
-(printout t "	b. Consume otras aves" crlf)
+(printout t crlf "¿Cómo son las alas del ave?" crlf)
+(printout t "	a. Son pequeñas" crlf)
+(printout t "	b. son grandes" crlf)
 (printout t "(Por favor responda a/b): ")
-(assert (alimentacion_ave (read))))
+(assert (alas_ave (read))))
 
 ;-------------------------------------------------------------
 ;     Reglas de aplicación para mamíferos        			  |
@@ -301,19 +301,19 @@
 	(assert (Backtrace (id "o") (informacion "No se reconoce la capacidad de vuelo del ave")))	
 	(assert (desconocido calidad_vuelo)))
 
-;Alimentación ave 1
-(defrule R19 "Consume crustáceos"
-	(alimentacion_ave a)
+;Alas ave 1
+(defrule R19 "Alas pequeñas"
+	(alas_ave a)
 	=>
-	(assert (Backtrace (id "p") (informacion "El ave identificada se alimenta de crustáceos")))	
-	(assert (come_crustaceos)))
+	(assert (Backtrace (id "p") (informacion "El ave identificada tiene alas pequeñas")))	
+	(assert (alas_peque)))
 
-;Alimentación ave 2
+;Alas ave 2
 (defrule R20 "Otro"
-	(alimentacion_ave b)
+	(alas_ave b)
 	=>
-	(assert (Backtrace (id "q") (informacion "El ave identificada se alimenta de otras aves")))	
-	(assert (come_aves)))
+	(assert (Backtrace (id "q") (informacion "El ave identificada tiene alas grandes")))	
+	(assert (alas_grandes)))
 
 ;Alimentación mamíferos 1
 (defrule R21 "Come carne"
@@ -459,7 +459,7 @@
 (defrule A5 "Albatros"
 	(ave ?x)
 	(vuela_bien)
-	(come_crustaceos)
+	(alas_grandes)
 	=>
 	(assert (animal albatros))
 	(printout t crlf "=====> El animal es un albatros" crlf)
@@ -470,7 +470,7 @@
 (defrule A6 "Halcón peregrino"
 	(ave ?x)
 	(vuela_bien)
-	(come_aves)
+	(alas_peque)
 	=>
 	(assert (animal halcon_peregrino))
 	(printout t crlf "=====> El animal es un halcón peregrino" crlf)
