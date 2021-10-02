@@ -64,6 +64,22 @@
 (assert (apariencia_cria (read))))
 
 
+
+;-------------------------------------------------------------
+;     Reglas de aplicación para crias no observables			  |
+;-------------------------------------------------------------
+
+;aquatico 1
+(defrule Rt12 "Test 12: Aquatico"
+(tiempo_en_agua ?x)
+=>
+(printout t "¿El animal se observa mayoritariamente en el agua?" crlf)
+(printout t "	a. Si" crlf)
+(printout t "	b. no" crlf)
+(printout t "(Por favor responda a/b): ")
+(assert (tiempoenagua (read))))
+
+
 ;-------------------------------------------------------------
 ;     Reglas de aplicación para la aves	          			  |
 ;-------------------------------------------------------------
@@ -236,7 +252,7 @@
 	(crias c) 
 	=>
 	(assert (Backtrace (id "g") (informacion "No se identifica información acerca de las crías")))	
-	(assert (desconocido cria)))
+	(assert (tiempo_en_agua cria)))
 
 ;Crías 4
 (defrule R10 "dar leche" 
@@ -244,6 +260,23 @@
 	=>
 	(assert (Backtrace (id "g") (informacion "El animal es un mamífero")))	
 	(assert (mamifero cria)))
+
+	;AQUI VAN LAS R34 Y 35 DEPENDIENDO DE SI SE APRECIA MUCHO TIEMPO EN AGUA
+
+;Agua 1
+(defrule R34 "pasa en el agua" 
+	(tiempoenagua a) 
+	=>
+	(assert (Backtrace (id "ag") (informacion "El animal se observa mayoritariamente en el agua")))	
+	(assert (cuatro_patas agua))
+	(assert (piel_desnuda agua)))
+
+;Agua 2
+(defrule R35 " no pasa en el agua" 
+	(tiempoenagua b) 
+	=>
+	(assert (Backtrace (id "nag") (informacion "No se puede determinar si el animal pasa en el agua mayoritariamente")))	
+	(assert (desconocido tiempoenagua)))
 
 ;Cantidad patas 1
 (defrule R11 "Cuatro patas cría"
