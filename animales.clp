@@ -30,7 +30,8 @@
 (printout t "	a. Tiene pelo" crlf)
 (printout t "	b. Tiene plumas" crlf)
 (printout t "	c. No se aprecia bien" crlf)
-(printout t "(Por favor responda a/b/c): ")
+(printout t "	d. Tiene piel desnuda" crlf)
+(printout t "(Por favor responda a/b/c/d): ")
 (assert (apariencia (read))))
 
 ;-------------------------------------------------------------
@@ -186,11 +187,13 @@
 	(assert (Backtrace (id "c") (informacion "Identificación de crías")))	
 	(assert (reconocerCria apariencia)))
 
-;Al menos que haya un camino a salamandra, no que sea con la primer respuesta
-;(defrule R4 "cobertura de piel 4" 
-	;(apariencia d) 
-	;=>
-	;(assert (piel_desnuda apariencia)))
+;Apariencia 4
+(defrule R33 "cobertura de piel 4" 
+	(apariencia d) 
+	=>
+	(assert (Backtrace (id "da") (informacion "El animal tiene piel desnuda")))
+	(assert (piel_desnuda apariencia))
+	(assert (cuatro_patas apariencia)))
 
 ;Apariencia 4
 (defrule R4 "dos patas, pone huevos"
